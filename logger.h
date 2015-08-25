@@ -1,11 +1,11 @@
 #pragma once
 #include <fstream>
 #include <iostream>
-#include <vector>
 #include <string>
 #include <thread>
 #include <mutex>
 #include <map>
+
 class Logger
 {
 
@@ -14,7 +14,6 @@ public:
     Logger(std::string file);
     ~Logger();
     void log(const char * msg);
-
 
 private:
     static std::map<std::string, int> files;

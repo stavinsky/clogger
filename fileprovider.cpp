@@ -1,10 +1,8 @@
-#include "logger.h"
-#include <algorithm>
-#include <iostream>
+#include "fileprovider.h"
 
 
 std::map<std::string, int> Logger::files;
-std::mutex Logger::mutex_logger;
+std::mutex Logger::mutex_files_map;
 
 
 Logger::Logger(std::string file)
@@ -47,8 +45,5 @@ void Logger::log(const char *msg)
 {
     logfile << msg << std::endl;
 }
-
-
-
 
 
