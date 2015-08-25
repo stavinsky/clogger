@@ -1,49 +1,34 @@
 #include "fileprovider.h"
 
 
-std::map<std::string, int> Logger::files;
-std::mutex Logger::mutex_files_map;
+std::map<std::string, std::shared_ptr<File>> FileProvider::files;
+std::mutex FileProvider::m_files;
 
 
-Logger::Logger(std::string file)
+FileProvider::FileProvider(std::string f)
 {
-    filename = file;
+    std::lock_guard<std::mutex> lock(m_files);
 
-    std::lock_guard<std::mutex> lock(mutex_logger);
-
-    if(files.count(file)>0)
+    if(files.count(f)>0)
     {
-        files[file]++;
+        file = files[f];
         return;
     }
-    else
-    {
-        files[file] = 0;
-    }
 
-    logfile.open(file, std::ios::app);
+    files[f].reset(new File);
+    files[f]->file.open(f, std::ios::app);
+    files[f]->file_name = f;
+    file = files[f];
 
 }
-Logger::~Logger()
+FileProvider::~FileProvider()
 {
-    std::lock_guard<std::mutex> lock(mutex_logger);
-    if(files.count(filename)>0)
-    {
-        if(files[filename]==0)
-        {
-            logfile.close();
-        }
-        if(files[filename]>0)
-        {
-            files[filename]--;
-        }
-    }
 
 }
 
-void Logger::log(const char *msg)
+void FileProvider::write_line(std::string line)
 {
-    logfile << msg << std::endl;
+    file->file << line << std::endl;
 }
 
 

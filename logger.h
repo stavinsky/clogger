@@ -5,20 +5,19 @@
 #include <thread>
 #include <mutex>
 #include <map>
+#include "fileprovider.h"
 
 class Logger
 {
 
 public:
 
-    Logger(std::string file);
-    ~Logger();
-    void log(const char * msg);
+
+    Logger(std::string f);
+    ~Logger(){}
+    void log(std::string msg);
 
 private:
-    static std::map<std::string, int> files;
-    static std::mutex mutex_logger;
-    std::ofstream logfile;
-    std::string filename;
+    FileProvider provider;
 };
 
