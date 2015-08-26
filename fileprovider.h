@@ -23,7 +23,7 @@ public:
     ~FileProvider();
     void write_line(std::string line);
 private:
-    static std::map<std::string, std::shared_ptr<File>> files;
+    static std::map<std::string, std::shared_ptr<File> > files;
     static std::mutex m_files;
     std::shared_ptr<File> file;
 
